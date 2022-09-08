@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" href="/PIAproblemas22-23/assets/favicon.png">
+  <script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ["\\(", "\\)"]],
+      processEscapes: true,
+    }
+  };
+</script>
+
+<!-- This weird alignment is required by Franklin's parser. -->
+<script
+    async
+    src="/PIAproblemas22-23/assets/MathJax/MathJax-3.2.2/es5/tex-mml-chtml.js">
+</script>
+
+<style>
+@font-face {
+  src: url("/JuliaTutorialsTemplate//assets/MathJax/MathJax-3.2.2/es5/output/chtml/fonts/woff-v2/MathJax_Main-Regular.woff">
+}
+</style>
+
+<style>
+@font-face {
+  src: url("/JuliaTutorialsTemplate//assets/MathJax/MathJax-3.2.2/es5/output/chtml/fonts/woff-v2/MathJax_Zero.woff">
+}
+</style>
+
+<style>
+@font-face {
+  src: url("/JuliaTutorialsTemplate//assets/MathJax/MathJax-3.2.2/es5/output/chtml/fonts/woff-v2/MathJax_Math-Italic.woff">
+}
+</style>
+
+  <link rel="stylesheet"
+  href="/PIAproblemas22-23/assets/Highlight/cdn-release-11.5.0/build/styles/github.min.css">
+
+<script
+  src="/PIAproblemas22-23/assets/Highlight/cdn-release-11.5.0/build/highlight.min.js">
+</script>
+
+<script
+  src="/PIAproblemas22-23/assets/Highlight/cdn-release-11.5.0/build/languages/julia.min.js">
+</script>
+
+<script
+  src="/PIAproblemas22-23/assets/Highlight/cdn-release-11.5.0/build/languages/julia-repl.min.js">
+</script>
+
+<script>
+  hljs.configure({tabReplace: '    '});
+  hljs.highlightAll();
+</script>
+
+    <style>
+    @font-face {
+      font-family: JuliaMono-Regular;
+      src: url("/JuliaTutorialsTemplate//assets/JuliaMono/juliamono-0.044/webfonts/JuliaMono-Regular.woff2");
+    }
+    </style>
+
+  <link rel="stylesheet" href="/PIAproblemas22-23/css/spectre.min.css">
+  <link rel="stylesheet" href="/PIAproblemas22-23/css/spectre-exp.min.css">
+  <link rel="stylesheet" href="/PIAproblemas22-23/css/spectre-icons.min.css">
+  <link rel="stylesheet" href="/PIAproblemas22-23/css/spectre-overrides.css">
+  <link rel="stylesheet" href="/PIAproblemas22-23/css/docs.min.css">
+
+  <title>4. Mezclado - Problemas PIA 2022-23</title>
+  <meta name="description" content="A template for building websites with Julia language content. Easily create Pluto notebooks and publish them online.">
+</head>
+<body>
+  <div class="docs-container off-canvas off-canvas-sidebar-show">
+  <div class="docs-navbar">
+    <a class="off-canvas-toggle btn btn-link btn-action" href="#sidebar"><i class="icon icon-menu"></i></a>
+    <div class="btns d-flex">
+      <a class="btn btn-primary ml-1" href="https://github.com/rikhuijzer/JuliaTutorialsTemplate">GitHub</a>
+    </div>
+</div>
+
+<div id="sidebar" class="docs-sidebar off-canvas-sidebar">
+
+<div class="docs-brand">
+    <h5><a href="/PIAproblemas22-23/">Problemas PIA 2022-23</a></h5>
+</div>
+
+<div class="docs-nav">
+<div class="accordion-container">
+  <ul class="menu menu-nav">
+    <div class="menu-header">Inicio</div>
+    <li class='menu-item '><a href='/PIAproblemas22-23///'>Inicio</a></li>
+    <br/>
+    <div class="menu-header">Temas</div>
+    <li class='menu-item '><a href='/PIAproblemas22-23//2.PrepMatPrima/'>2. Preparación de materia prima</a></li>
+    <li class='menu-item '><a href='/PIAproblemas22-23//3.RedTamaño/'>3. Reducción de tamaño</a></li>
+    <li class='menu-item '><a href='/PIAproblemas22-23//4.Mezclado/'>4. Mezclado</a></li>
+    <li class='menu-item '><a href='/PIAproblemas22-23//5.SepFisicas/'>5. Separaciones físicas</a></li>
+    <li class='menu-item '><a href='/PIAproblemas22-23//8.ConsCalor/'>8. Conservación por calor</a></li>
+    <br/>
+    <div class="menu-header">Example Pluto tutorials</div>
+    <li class='menu-item '><a href='/PIAproblemas22-23/tutorials/linear-model/'>Linear model</a></li>
+    <li class='menu-item '><a href='/PIAproblemas22-23/tutorials/ode/'>Harmonic oscillator</a></li>
+    <li class='menu-item '><a href='/PIAproblemas22-23/tutorials/benchmarking/'>Benchmarking</a></li>
+  </ul>
+</div>
+</div>
+</div>
+<a class="off-canvas-overlay" href="#close"></a>
+
+
+<div class="off-canvas-content">
+<div id="content" class="docs-content">
+<div class="container">
+<!-- Content appended here -->
+<div class="franklin-content"><h2 id="4_mezclado"><a href="#4_mezclado" class="header-anchor">4 Mezclado</a></h2>
+<h3 id="1"><a href="#1" class="header-anchor">1</a></h3>
+<p>El análisis del contenido de grasa de un chopped cuyo contenido total de grasa es del 15 &#37; ha dado los siguientes resultados expresados en &#37;: 23.4, 10.4, 16.4, 19.6, 30.5, 7.6.</p>
+<ol>
+<li><p>Calcular, para esta mezcla los índices de mezclado M₁, M₂ y M₃.</p>
+</li>
+<li><p>Si la mezcla se ha formado a partir de los ingredientes separados iniciales de grasa y carne magra después de 10 min de mezclado, calcular el índice de mezclado M₁ a los 5 min de haberse realizado el proceso. &#91;<a href="https://www.nzifst.org.nz/resources/unitoperations/mixing6.htm#problems">Earle</a>&#93;</p>
+</li>
+</ol>
+<p><strong><a href="/PIAproblemas22-23/assets/notebooks-html/prob4-1.jl.html">Solución</a></strong></p>
+<h3 id="2"><a href="#2" class="header-anchor">2</a></h3>
+<p>Un mezclador de líquidos con un agitador de hélice de 0.3 m de diámetro gira a 300 rpm en un tanque de 0.6 m de diámetro. </p>
+<ol>
+<li><p>Calcular la potencia a la que trabaja el equipo para agitar agua.</p>
+</li>
+<li><p>Calcular la potencia a la que trabaja el equipo para agitar aceite de oliva.</p>
+</li>
+</ol>
+<p>Datos: Viscosidad del agua &#61; 1 mPa.s, densidad del agua &#61; 1000 kg/m³. Viscosidad del aceite &#61; 80 mPa.s, densidad del aceite &#61; 914 kg/m³. &#91;<a href="https://www.nzifst.org.nz/resources/unitoperations/mixing6.htm#problems">Earle</a>&#93;</p>
+<p><strong><a href="/PIAproblemas22-23/assets/notebooks-html/prob4-2.jl.html">Solución</a></strong></p>
+<h3 id="3"><a href="#3" class="header-anchor">3</a></h3>
+<p>Un agitador de hélice &#40;agitador 1 de la figura&#41; con un diámetro de 40 cm se utiliza para mezclar agua &#40;μ &#61; 1 cP&#41;. ¿A qué potencia debe trabajar el agitador para girar a 200 rpm?</p>
+<p><img src="prob4-3.png" alt="" /></p>
+<p><strong><a href="/PIAproblemas22-23/assets/notebooks-html/prob4-3.jl.html">Solución</a></strong></p>
+<h3 id="4"><a href="#4" class="header-anchor">4</a></h3>
+<p>Se mezclan 700 g de azúcar con 100 kg de harina. Durante el mezclado se toman 10 muestras de 10 g, a 1, 5 y 10 min y se analiza el porcentaje de azúcar. Los resultados son los siguientes:</p>
+<table><tr><th align="right">Tiempo</th><th align="right">1</th><th align="right">2</th><th align="right">3</th><th align="right">4</th><th align="right">5</th><th align="right">6</th><th align="right">7</th><th align="right">8</th><th align="right">9</th><th align="right">10</th></tr><tr><td align="right">1 min</td><td align="right">0.21</td><td align="right">0.32</td><td align="right">0.46</td><td align="right">0.17</td><td align="right">0.89</td><td align="right">1.00</td><td align="right">0.98</td><td align="right">0.23</td><td align="right">0.10</td><td align="right">0.14</td></tr><tr><td align="right">1.5 min</td><td align="right">0.85</td><td align="right">0.80</td><td align="right">0.62</td><td align="right">0.78</td><td align="right">0.75</td><td align="right">0.39</td><td align="right">0.84</td><td align="right">0.96</td><td align="right">0.58</td><td align="right">0.47</td></tr><tr><td align="right">10 min</td><td align="right">0.72</td><td align="right">0.69</td><td align="right">0.71</td><td align="right">0.70</td><td align="right">0.68</td><td align="right">0.71</td><td align="right">0.70</td><td align="right">0.72</td><td align="right">0.70</td><td align="right">0.7</td></tr></table>
+<p>Calcular:</p>
+<ol>
+<li><p>La desviación estándar de la mezcla para cada uno de los tiempos.</p>
+</li>
+<li><p>Seleccionar y calcular uno de los índices de mezclado.</p>
+</li>
+<li><p>Calcular la desviación estándar de la mezcla tras 6 min de operación. En este caso, se considerará una &quot;mezcla perfecta&quot;, la que tenga \(s_\infty\) &#61; 0.001. &#91;Fellows&#93;</p>
+</li>
+</ol>
+<p><strong><a href="/PIAproblemas22-23/assets/notebooks-html/prob4-4.jl.html">Solución</a></strong></p>
+<h3 id="5"><a href="#5" class="header-anchor">5</a></h3>
+<p>Se quiere mezclar un concentrado vitamínico con melazas espesas, habiéndose encontrado que se obtienen velocidades de mezclado aceptables con un depósito pequeño de 0.67 m de diámetro y altura 0.75 m con un mezclador de 0.33 m de diámetro girando a 450 rpm. Se ha diseñado una instalación mayor, que precisa de un depósito de 2 m de diámetro.</p>
+<p>¿Cuáles son os valores adecuados a elegir para la profundidad del depósito, diámetro de la hélice y velocidad de rotación si se quieren conservar las mismas condiciones que en el depósito pequeño?</p>
+<p>¿Cuál será la potencia necesaria para el motor de la hélice?</p>
+<p>Datos: Melaza: µ &#61; 6.6 N s m⁻², ρ &#61; 1520 kg m⁻³. Mezclador: <em>k</em> &#61; 41, <em>n</em> &#61; -1</p>
+<p><strong><a href="/PIAproblemas22-23/assets/notebooks-html/prob4-5.jl.html">Solución</a></strong></p>
+<script type="text/javascript" src="/PIAproblemas22-23/libs/ansi_up.js" defer></script>
+
+<div id="copyright" class="docs-footer container grid-lg">
+<a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Javier Arántegui
+</div>
+</div><!-- CONTENT ENDS HERE -->
+    </div>
+    </div>
+    </div>
+    </div>
+  </body>
+</html>

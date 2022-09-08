@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" href="/PIAproblemas22-23/assets/favicon.png">
+  <script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ["\\(", "\\)"]],
+      processEscapes: true,
+    }
+  };
+</script>
+
+<!-- This weird alignment is required by Franklin's parser. -->
+<script
+    async
+    src="/PIAproblemas22-23/assets/MathJax/MathJax-3.2.2/es5/tex-mml-chtml.js">
+</script>
+
+<style>
+@font-face {
+  src: url("/JuliaTutorialsTemplate//assets/MathJax/MathJax-3.2.2/es5/output/chtml/fonts/woff-v2/MathJax_Main-Regular.woff">
+}
+</style>
+
+<style>
+@font-face {
+  src: url("/JuliaTutorialsTemplate//assets/MathJax/MathJax-3.2.2/es5/output/chtml/fonts/woff-v2/MathJax_Zero.woff">
+}
+</style>
+
+<style>
+@font-face {
+  src: url("/JuliaTutorialsTemplate//assets/MathJax/MathJax-3.2.2/es5/output/chtml/fonts/woff-v2/MathJax_Math-Italic.woff">
+}
+</style>
+
+  <link rel="stylesheet"
+  href="/PIAproblemas22-23/assets/Highlight/cdn-release-11.5.0/build/styles/github.min.css">
+
+<script
+  src="/PIAproblemas22-23/assets/Highlight/cdn-release-11.5.0/build/highlight.min.js">
+</script>
+
+<script
+  src="/PIAproblemas22-23/assets/Highlight/cdn-release-11.5.0/build/languages/julia.min.js">
+</script>
+
+<script
+  src="/PIAproblemas22-23/assets/Highlight/cdn-release-11.5.0/build/languages/julia-repl.min.js">
+</script>
+
+<script>
+  hljs.configure({tabReplace: '    '});
+  hljs.highlightAll();
+</script>
+
+    <style>
+    @font-face {
+      font-family: JuliaMono-Regular;
+      src: url("/JuliaTutorialsTemplate//assets/JuliaMono/juliamono-0.044/webfonts/JuliaMono-Regular.woff2");
+    }
+    </style>
+
+  <link rel="stylesheet" href="/PIAproblemas22-23/css/spectre.min.css">
+  <link rel="stylesheet" href="/PIAproblemas22-23/css/spectre-exp.min.css">
+  <link rel="stylesheet" href="/PIAproblemas22-23/css/spectre-icons.min.css">
+  <link rel="stylesheet" href="/PIAproblemas22-23/css/spectre-overrides.css">
+  <link rel="stylesheet" href="/PIAproblemas22-23/css/docs.min.css">
+
+  <title>8. Conservación por calor - Problemas PIA 2022-23</title>
+  <meta name="description" content="A template for building websites with Julia language content. Easily create Pluto notebooks and publish them online.">
+</head>
+<body>
+  <div class="docs-container off-canvas off-canvas-sidebar-show">
+  <div class="docs-navbar">
+    <a class="off-canvas-toggle btn btn-link btn-action" href="#sidebar"><i class="icon icon-menu"></i></a>
+    <div class="btns d-flex">
+      <a class="btn btn-primary ml-1" href="https://github.com/rikhuijzer/JuliaTutorialsTemplate">GitHub</a>
+    </div>
+</div>
+
+<div id="sidebar" class="docs-sidebar off-canvas-sidebar">
+
+<div class="docs-brand">
+    <h5><a href="/PIAproblemas22-23/">Problemas PIA 2022-23</a></h5>
+</div>
+
+<div class="docs-nav">
+<div class="accordion-container">
+  <ul class="menu menu-nav">
+    <div class="menu-header">Inicio</div>
+    <li class='menu-item '><a href='/PIAproblemas22-23///'>Inicio</a></li>
+    <br/>
+    <div class="menu-header">Temas</div>
+    <li class='menu-item '><a href='/PIAproblemas22-23//2.PrepMatPrima/'>2. Preparación de materia prima</a></li>
+    <li class='menu-item '><a href='/PIAproblemas22-23//3.RedTamaño/'>3. Reducción de tamaño</a></li>
+    <li class='menu-item '><a href='/PIAproblemas22-23//4.Mezclado/'>4. Mezclado</a></li>
+    <li class='menu-item '><a href='/PIAproblemas22-23//5.SepFisicas/'>5. Separaciones físicas</a></li>
+    <li class='menu-item '><a href='/PIAproblemas22-23//8.ConsCalor/'>8. Conservación por calor</a></li>
+    <br/>
+    <div class="menu-header">Example Pluto tutorials</div>
+    <li class='menu-item '><a href='/PIAproblemas22-23/tutorials/linear-model/'>Linear model</a></li>
+    <li class='menu-item '><a href='/PIAproblemas22-23/tutorials/ode/'>Harmonic oscillator</a></li>
+    <li class='menu-item '><a href='/PIAproblemas22-23/tutorials/benchmarking/'>Benchmarking</a></li>
+  </ul>
+</div>
+</div>
+</div>
+<a class="off-canvas-overlay" href="#close"></a>
+
+
+<div class="off-canvas-content">
+<div id="content" class="docs-content">
+<div class="container">
+<!-- Content appended here -->
+<div class="franklin-content"><div class="no-number"><h2 id="8_conservación_por_calor"><a href="#8_conservación_por_calor" class="header-anchor">8 Conservación por calor</a></h2>
+<h3 id="1"><a href="#1" class="header-anchor">1</a></h3>
+<p>Se desea esterilizar un alimento envasado. Como objetivo de la esterilización se desean lograr 12 reducciones logarítmicas de una variedad de Clostridium botulinum de <em>z</em> &#61; 6.7 °C y <em>D₁₂₁</em> &#61; 0.26 min. La curva de penetración de calor en el centro del envase es la siguiente:</p>
+<p>¿Es suficiente el tiempo de tratamiento? ¿En cuanto habría que cambiar el tiempo en que se mantiene la temperatura a 115 °C para lograr las 12 reducciones logarítmicas?</p>
+<p><strong><a href="/PIAproblemas22-23/assets/notebooks-html/prob8-01.jl.html">Solución</a></strong></p>
+<h3 id="2"><a href="#2" class="header-anchor">2</a></h3>
+<p>Se somete un producto a una esterilización térmica en escalones según la siguiente tabla:</p>
+<table><tr><th align="right">t &#40;min&#41;</th><th align="right">T &#40;°C&#41;</th></tr><tr><td align="right">0</td><td align="right">77</td></tr><tr><td align="right">3</td><td align="right">95</td></tr><tr><td align="right">7</td><td align="right">110</td></tr><tr><td align="right">10</td><td align="right">128</td></tr><tr><td align="right">12</td><td align="right">120</td></tr><tr><td align="right">15</td><td align="right">90</td></tr><tr><td align="right">18.5</td><td align="right">20</td></tr></table>
+<p>Determinar:</p>
+<ol>
+<li><p><em>z</em>, <em>D₁₂₁․₁</em>, <em>E𝖺</em>, <em>k₀</em></p>
+</li>
+<li><p>N al final de cada etapa de temperatura constante</p>
+</li>
+<li><p>Valores de L y n de todo el tratamiento térmico</p>
+</li>
+</ol>
+<p>Datos:</p>
+<p>El microorganismo más termoresistente presenta: <em>D₁₁₀</em> &#61; 19.26 min; <em>D₁₂₅</em> &#61; 0.15 min y <em>N₀</em> &#61; 2.5·10⁶ ufc/g.</p>
+<p><strong><a href="/PIAproblemas22-23/assets/notebooks-html/prob8-02.jl.html">Solución</a></strong></p>
+<h3 id="3"><a href="#3" class="header-anchor">3</a></h3>
+<p>El Sr. Barrufet, magnate y presidente de uno de los principales holdings del sector agroalimentario, tuvo a bien recibir el año pasado a los alumnos de la UdL. La recepción tuvo lugar en una de sus fábricas, concretamente la dedicada a conservas vegetales de Verdú.</p>
+<p>Entre los diversos productos allí elaborados, destacan las conservas de las setas autóctonas de la zona &#40;<em>Bolletus terrafermae</em>, X.&#41;, cuya exquisitez no tiene parangón. Estando en la sala de autoclaves, comentaba airadamente nuestro anfitrión las vicisitudes por las que pasó un licenciado en ciencia y tecnología de alimentos que contrató “ex profeso” hasta establecer el programa de esterilización de las citadas setas. &#40;Lo que se le olvidó comentar fue que lo despidió una vez tuvo conocimiento de los baremos de esterilización a aplicar al producto y de sus pretensiones económicas&#41;.</p>
+<p>Dicho programa conseguía la esterilidad comercial perseguida y era el que se estaba aplicando en los autoclaves durante la visita a las instalaciones. En líneas generales – decía orgulloso el Sr. Barrufet – consiste en introducir los botes de las setas a una temperatura de 60 °C &#40;en el punto crítico&#41; en el autoclave y elevar la temperatura linealmente mediante la inserción de vapor hasta 125 °C. Una vez alcanzado este valor, se mantiene constante durante 4 minutos. A continuación, se enfría linealmente a contrapresión hasta unos 60 °C. En definitiva, se consigue un F0 total de 13.5 min. La fase de calentamiento y enfriamiento representan un 2 y un 1 &#37; del valor anterior.</p>
+<p>Con estas y otras disquisiciones estaba nuestro personaje cuando, de pronto, se disparó la horrísona alarma de uno de los autoclaves. Todo el grupo visitante y personal laboral próximo al lugar del incidente, precedidos por un asustado y algo contrariado presidente del holding, corrimos en tropel hacia aquel autoclave a ver que ocurría.</p>
+<p>–¡¡Que vengan los de mantenimiento&#33;&#33; - gritó con autoridad el Sr. Barrufet.</p>
+<p>Al instante llegaron &#40;asombroso&#41;.</p>
+<p>Se había producido exactamente al minuto de iniciarse el programa de esterilización, una fuga de vapor en la junta entre la conducción del fluido calefactor y el propio autoclave.</p>
+<p>Mientras se reparaba la avería, nervioso, y sin duda recordando en qué malahora no accedió a las condiciones del técnico que despidió, casi sollozando, el Sr. Barrufet decía:</p>
+<p>–¿Y qué haremos ahora? Nunca me había pasado esto. Los de mantenimiento me arreglan el escape rápido – por la cuenta que les traía –, pero ¿cómo acabo después de la avería el programa de esterilización? ¿Podrían ayudarme? Contrato fijo a uno de estas chicas o chicos, si me dicen que debo hacer.</p>
+<p>Naturalmente supieron qué había que hacer. Se fueron al registrador de la temperatura y anotaron los siguientes datos correspondientes al período de avería, justo entre el primer minuto del programa inicial y el momento en que la temperatura empezó a subir otra vez linealmente, según el programa normal:</p>
+<p><em>Calentamiento:</em></p>
+<table><tr><th align="right">t &#40;min&#41;</th><th align="right">T &#40;°C&#41;</th></tr><tr><td align="right">0</td><td align="right">¿?</td></tr><tr><td align="right">0.5</td><td align="right">111.5</td></tr><tr><td align="right">1.0</td><td align="right">115.0</td></tr><tr><td align="right">1.5</td><td align="right">116.5</td></tr><tr><td align="right">2.0</td><td align="right">117.0</td></tr><tr><td align="right">2.5</td><td align="right">117.5</td></tr><tr><td align="right">3.0</td><td align="right">117.0</td></tr><tr><td align="right">3.5</td><td align="right">116.5</td></tr><tr><td align="right">8.0</td><td align="right">95.0</td></tr></table>
+<p><em>Enfriamiento:</em></p>
+<table><tr><th align="right">t &#40;min&#41;</th><th align="right">T &#40;°C&#41;</th></tr><tr><td align="right">4.0</td><td align="right">115.0</td></tr><tr><td align="right">4.5</td><td align="right">112.5</td></tr><tr><td align="right">5.0</td><td align="right">107.5</td></tr><tr><td align="right">5.5</td><td align="right">100.0</td></tr><tr><td align="right">6.0</td><td align="right">97.5</td></tr><tr><td align="right">6.5</td><td align="right">96.0</td></tr><tr><td align="right">7.0</td><td align="right">95.3</td></tr><tr><td align="right">7.5</td><td align="right">95.0</td></tr></table>
+<p>Con esta información y la aportada inicialmente por el Sr. Barrufet fueron capaces de:</p>
+<ol>
+<li><p>Calcular <em>z</em>, <em>fh</em>, <em>fc</em>, temperatura en el punto crítico en el momento de iniciarse la avería</p>
+</li>
+<li><p>Trazar la curva de penetración de calor en el punto crítico del programa normal de trabajo, así como evaluar el valor letal de cada una de las zonas.</p>
+</li>
+<li><p>Hacer lo mismo pero para aquella azarosa partida y garantizando el mismo grado de esterilidad que se conseguía en el caso anterior.</p>
+</li>
+</ol>
+<p>Epílogo: Como todos los alumnos fueron capaces de resolver el problema planteado por el Sr. Barrufet, al final tuvieron que decidir quién se quedaba a piedra, papel o tijera. La fortuna y la intercesión del santo local hicieron justicia con el empollón del grupo, Pere Clever, quien me imagino continua en la empresa todavía, si el Sr. Barrufet no ha sufrido un nuevo acceso de racanería.</p>
+<h3 id="4"><a href="#4" class="header-anchor">4</a></h3>
+<p>La conferencia del profesor de Procesos sobre conservas vegetales había sido muy aburrida, pero las preguntas de una de las señoras del público te hicieron reaccionar. La señora en cuestión &#40;a&#41;, una <em>pagesa</em> de toda la vida, dijo que la conferencia era muy interesante, pero que, a ella, lo que le preocupaba era que los botes de conserva que fabricaba le salieran todos bien, la mayoría de las veces, pero de vez en cuando algunos le salían defectuosos. La señora explicó que ponía los botes, inicialmente a 25 °C, en un baño maría cuando el agua entraba en ebullición, y los dejaba durante 30 minutos. Entonces los sacaba y enfriaba con un chorro de agua fría hasta unos 25 °C. Siempre lo hacía igual.</p>
+<p>“Esta situación la conocemos muy bien”, explicó el profesor. “Lo hemos estudiado y sabemos que con los envases que utilizan ustedes, el contenido se calienta y se enfría según la ley siguiente”. Enseñó la transparencia número 1. “Esto consume parte de los 30 minutos. El resto del tiempo podemos asumir que el contenido del envase está, efectivamente, a la misma temperatura que el agua en ebullición. Esto es lo que hace que su producto se conserve. Pero si los resultados son tan diferentes es que algo ha fallado. ¿Puede decirme usted si ha observado alguna cosa especial cuando ha fabricado las conservas que se le deterioran? ¿Puede ser que las fabrique los días de lluvia &#40;A1&#41;? Ya sabe que cuando llueve suele haber bajas presiones, y que el agua hierve a temperatura más baja; por este motivo el tratamiento térmico que realiza usted no siempre es igual”. La señora no estaba segura si esta era la causa, pero dijo que pudiera ser, que quizás fabricaba las conservas defectuosas los días de lluvia…</p>
+<p>“¿Lo ve?”, dijo el profesor. “ Debería hacerlas sólo los días que haya anticiclón &#40;A2&#41;. Y, para acabar, les mostraré por curiosidad, como reacciona el microorganismo responsable de estas alteraciones con el calor”. Puso la transparencia número 2. Otra señora &#40;B&#41; dijo que era mejor dejarse de puñetas, que lo que ella hacía siempre era añadir sal al agua hasta que, termómetro en mano, hervía a 110 °C, y entonces ponía los botes durante 30 minutos.</p>
+<p>Pensaste que seguramente esta señora era más prudente, pero no te convencía la explicación del profesor. Parecía que las oscilaciones de presión atmosférica no daban lugar a cambios tan evidentes. Te propusiste calcularlo. Hiciste una búsqueda de que oscilaciones de presión podían tener lugar, y a qué temperatura hervía el agua a estas presiones. Te Encontraste con el cuadro siguiente:</p>
+<table><tr><th align="right">Situación</th><th align="right">Presión &#40;mbar&#41;</th><th align="right">T ebullición del agua &#40;°C&#41;</th></tr><tr><td align="right">Anticiclón</td><td align="right">1030</td><td align="right">100.4</td></tr><tr><td align="right">Normal</td><td align="right">1013</td><td align="right">100.0</td></tr><tr><td align="right">Borrasca</td><td align="right">960.</td><td align="right">98.5</td></tr></table>
+<p>Contenido de la Transparencia 1:</p>
+<p><hr />     Función T/t en calentamiento/enfriamiento:</p>
+\[T = T_i + f t\]
+<p>\(T\): Temperatura &#40;°C&#41;</p>
+<p>\(T_i\): Temperatura inicial</p>
+<p>\(f\): constante &#40;10 °C para calentamiento, -15 °C para enfriamiento&#41;</p>
+<p>\(t\): tiempo &#40;min&#41;</p>
+<hr />
+<p>Contenido de la Transparencia 2:</p>
+<p><hr /> Microorganismo de referencia Población en ufc/100 ml</p>
+<table><tr><th align="right">t &#40;min&#41; &#92; T &#40;°C&#41;</th><th align="right">95</th><th align="right">100</th><th align="right">105</th></tr><tr><td align="right">0</td><td align="right">1000000</td><td align="right">1000000</td><td align="right">1000000</td></tr><tr><td align="right">15</td><td align="right">816000</td><td align="right">580000</td><td align="right">250000</td></tr><tr><td align="right">30</td><td align="right">666000</td><td align="right">345000</td><td align="right">63000</td></tr></table>
+<hr />
+<p>Contestar a las siguientes preguntas:</p>
+<ol>
+<li><p>Comparar, mediante cálculos, la reducción de microorganismos producida en los tras casos expuestos &#40;A1, A2, B&#41;</p>
+</li>
+<li><p>¿Crees que la variación producida por la oscilación de la presión atmosférica justifica el aumento de botes alterados?</p>
+</li>
+<li><p>¿Crees que el método de la señora B es significativamente más efectivo que el de la señora A? ¿Por qué?</p>
+</li>
+<li><p>Exponer alguna hipótesis alternativa que pueda explicar las diferencias que encuentra las señora A.</p>
+</li>
+</ol>
+<h3 id="5"><a href="#5" class="header-anchor">5</a></h3>
+<p>Eres el técnico de producción de FETGESA, famosa por sus patés de todo tipo, comercializados en envases de lata de 50 y 850 g. Con intención de ajustar el funcionamiento de uno de los sistemas de esterilización en una línea de producción, encargaste a un laboratorio externo unas pruebas de destrucción térmica del microorganismo más termoresistente presente en una serie de muestras del producto. El laboratorio te había proporcionado todas las características de los parámetros de termoresistencia, pero desgraciadamente un técnico del laboratorio ha derramado ácido sulfúrico concentrado sobre el informe, que se ha desintegrado a excepción del fragmento siguiente, que has podido recuperar:</p>
+<p><hr /> Fecha: 4 de octubre Muestra: Proporcionada por FETGESA &#40;ref. 37/22&#41;</p>
+<p>Resultados D₁₁₀ &#61; 36.5  min;	D₁₁₈ &#61; 8.5 min;		D₁₂₇ &#61; 96 s</p>
+<p>Nota: Temperaturas en °C</p>
+<hr />
+<p>En este momento llega un analista del laboratorio de la propia fábrica, con un informe sobre la contaminación inicial de la pasta de paté, que da 10 ufc/g.</p>
+<ol>
+<li><p>Si se pretende lograr una contaminación final de 10⁻⁵ ufc/envase, ¿durante cuánto tiempo se deberían mantener los envases a 115 °C para lograrlo? Nota: Los envases son de 50 g y, en este caso, se puede despreciar el efecto de las fases de calentamiento y enfriamiento.</p>
+</li>
+<li><p>Si se realiza un calentamiento lineal desde 60 a 115 °C en 15 minutos, una fase de mantenimiento y, después, un enfriamiento lineal hasta 50 °C en 5 min, ¿cuánto debe durar la fase de mantenimiento?</p>
+</li>
+</ol>
+<h3 id="6"><a href="#6" class="header-anchor">6</a></h3>
+<p>FETGESA acaba de vender su antiguo autoclave discontinuo que tenía para los envases de 850 g y se acaba de comprar uno nuevo.</p>
+<p>Los operarios se disponen a esterilizar un lote de producto con el nuevo equipo y programan el mismo tiempo de mantenimiento que utilizaban en el equipo descartado. Antes de la renovación el producto, que inicialmente se encuentraba a 60 °C, subía linealmente hasta 125 °C en 6 minutos; se mantenía a esta temperatura durante 14 minutos y después se enfriaba, también linealmente, hasta los 60 °C en 8 minutos. </p>
+<p>Vas corriendo a avisarles, porque sospechas que con el nuevo autoclave el ciclo de calentamiento-enfriamiento no coincide con el antiguo.</p>
+<p>Efectivamente, miras el catálogo de la empresa suministradora y te das cuenta de que son diferentes, ya que sus características son las que se exponen en el siguiente fragmento del catálogo:</p>
+<p><hr /> AUTOCLAX, S.A.</p>
+<p>Características de uso del modelo RIMMER &#40;establecidas para envases de 850 g; ensayo con paté&#41;</p>
+<ul>
+<li><p>Fase de calentamiento: Tiene una duración de 4 minutos. La curva de penetración de calor t/T se ajusta a la siguiente fórmula empírica &#40;válida para 45 °C &lt; T &lt; 155 °C; T en °C, t en minutos&#41;:</p>
+</li>
+</ul>
+\[T = 127.65(1-\exp(-0.9(t+0.7838)))\]
+<ul>
+<li><p>Fase de enfriamiento: Una vez finalizada la etapa de mantenimiento, la etapa de enfriamiento muestra la siguiente relación t/T:</p>
+<table><tr><th align="right">t &#40;min&#41;</th><th align="right">1</th><th align="right">2</th><th align="right">3</th><th align="right">4</th><th align="right">5</th><th align="right">6</th></tr><tr><td align="right">T &#40;°C&#41;</td><td align="right">105</td><td align="right">90</td><td align="right">80</td><td align="right">72</td><td align="right">64</td><td align="right">60</td></tr></table>
+</li>
+</ul>
+<hr />
+<p>Determinar el tiempo que debe durar la fase de mantenimiento en el nuevo autoclave para que el tratamiento térmico sea equivalente.</p>
+<p>Nota: Todas las temperaturas son referidas al punto crítico del envase. Microorganismo de referencia: \(D_{121}\) &#61; 3.9 min y \(z\) &#61; 8 °C.</p>
+<p><strong><a href="/PIAproblemas22-23/assets/notebooks-html/prob8-06.jl.html">Solución</a></strong></p>
+<h3 id="7"><a href="#7" class="header-anchor">7</a></h3>
+<p>El sr. Barrufet tras un profundo estudio del mercado ha decidido que el futuro de su empresa está en la fabricación de productos dirigidos a deportistas. Para ello en la planta piloto está desarrollando un nuevo producto dirigido a ese mercado. Este producto consiste en una bebida basada en clara de huevo—debido su alto contenido proteico—, en fibra de frutas y una serie de aditivos autorizados: estabilizantes, aromatizantes y colorantes. El sr. Barrufet cree que logrará un buen resultado de ventas basado en una buena campaña publicitaria y en el uso de un ingrediente secreto que marcará la diferencia con el resto de competidores: la musculina. Esta es una hormona extraída de una especie de mono tropical que provoca un aumento exagerado de la masa muscular. Para ser efectiva la musculina debe estar presente en la bebida en una concentración de 15 ppm. La bebida se presentará en botes de 150 g.</p>
+<p>El sr. Barrufet te ha contratado como estudiante en prácticas &#40;ya que así le sale más barato&#41; para que diseñes la operación de esterilización térmica de este nuevo producto. Tu nuevo jefe piensa que lo mejor es utilizar los autoclaves discontinuos ya existentes. Estos autoclaves permiten realizar un calentamiento lineal a una velocidad de 8 °C/min, un enfriamiento lineal a -15 °C/min y pueden operar a una temperatura máxima de 127 °C. La temperatura inicial y final de los botes es de 35 °C. También cree que lo mejor es realizar la esterilización a 115 °C o a 127 °C, ya que la musculina es termosensible.</p>
+<p>Tras estudiar el problema le dices a tu jefe:</p>
+<ol>
+<li><p>el producto es asqueroso &#40;esto, en realidad, no lo dices solo lo piensas&#41;</p>
+</li>
+<li><p>no estás de acuerdo con que lo mejor sea realizar la operación a baja temperatura </p>
+</li>
+<li><p>lo mejor sería comprar un equipo de esterilización en continuo UHT de las siguientes características:</p>
+</li>
+</ol>
+<p><em>Calentamiento:</em></p>
+<table><tr><th align="right">Tiempo &#40;s&#41;</th><th align="right">Temperatura &#40;°C&#41;</th></tr><tr><td align="right">0</td><td align="right">98</td></tr><tr><td align="right">0.1</td><td align="right">104</td></tr><tr><td align="right">0.2</td><td align="right">111</td></tr><tr><td align="right">0.3</td><td align="right">127</td></tr><tr><td align="right">0.4</td><td align="right">135</td></tr><tr><td align="right">0.5</td><td align="right">138</td></tr><tr><td align="right">0.6</td><td align="right">140</td></tr></table>
+<p><em>Enfriamiento:</em></p>
+<table><tr><th align="right">Tiempo &#40;s&#41;</th><th align="right">Temperatura &#40;°C&#41;</th></tr><tr><td align="right">0</td><td align="right">140</td></tr><tr><td align="right">0.1</td><td align="right">127</td></tr><tr><td align="right">0.2</td><td align="right">114</td></tr><tr><td align="right">0.3</td><td align="right">106</td></tr><tr><td align="right">0.4</td><td align="right">94</td></tr></table>
+<p>Una vez realizada ya solo quedaría el realizar un envasado aséptico.</p>
+<p>Como consecuencia el sr. Barrufet quiere que le presentes un informe con la respuesta a las siguientes preguntas: </p>
+<ol>
+<li><p>Dar los tiempos de mantenimiento para cada una de los procesos: los propuestos por el sr. Barrufet &#40;esterilizar con los autoclaves a 115 °C o a 127 °C&#41; y el proceso UHT.</p>
+</li>
+<li><p>Justificar, mediante cálculos, cuál es el mejor de los tres procesos para esterilizar el producto en cuestión.</p>
+</li>
+<li><p>¿Cuánta musculina se debe añadir a la bebida para que tras el procesado—siguiendo el mejor de los procesos propuestos—se  obtenga la concentración deseada?</p>
+</li>
+</ol>
+<p>DATOS:</p>
+<ul>
+<li><p>El procesado busca lograr 12 reducciones decimales de un microorganismo con <em>z</em> &#61; 8.7 °C y <em>D₁₂₁</em> &#61; 2.3 min.</p>
+</li>
+<li><p>La musculina tiene un <em>D₁₂₁</em> &#61; 0.7 min y una <em>z</em> &#61; 50 °C.</p>
+</li>
+</ul>
+<p><strong><a href="/PIAproblemas22-23/assets/notebooks-html/prob8-07.jl.html">Solución</a></strong></p>
+<h3 id="8"><a href="#8" class="header-anchor">8</a></h3>
+<p>La fábrica de bebidas refrescantes POCACOSA está produciendo Gugolplex, la bebida isotónica que proporciona energía infinita, basada en una solución de 37 componentes en agua, que se trata térmicamente y gasifica con CO₂ y a continuación se envasa asépticamente.</p>
+<p>El departamento de I&#43;D de POCACOSA está ensayando para determinar las concentraciones óptimas de tres componentes secretos, que llama A, B y C. A no es soluble en agua cabonatada, de manera que lo han de descartar y destinarlo a otro producto de la empresa, sin gas. B y C, que tienen una solubilidad baja, son termolábiles y, por tanto, se destruyen parcialmente con el tratamiento térmico, que, por cuestiones de seguridad, se debe realizar después de obtener la disolución. Las pruebas organolépticas han fijado una concentración óptima de B en el producto final de 15 ppm, lo que se consigue saturando la solución inicial con 300 ppm de esta sustancia, mientras que con C se consigue que quede una concentración de 5 ppm partiendo de una solución inicial, no saturada, de 20 ppm. El tratamiento térmico habitual se hace en función de un microorganismo de referencia, que se encuentra presente en el agua &#40;pretratada mediante filtrado biológico&#41;, que se encuentra en una concentración de 1 UFC/ml, y se obtiene una concentración final de 10⁻¹⁰ UFC/ml, mediante un intercambiador de placas a 120 °C.</p>
+<p>Un día, el sistema de pretratamiento de agua, que permite pasar de una concentración de 10⁴ a la comentada 1 UFC/ml, se estropea, y a ti, como técnico de la planta, te toca cambiar el tratamiento térmico para seguir teniendo la concentración final habitual de microorganismos en el producto &#40;¡ten en cuenta que deberás utilizar agua sin pretratar&#33;&#41;. ¿Qué nuevo binomio de t-T deberás aplicar para mantener la concentración final de componente B, que no se puede añadir en mayor cantidad a la solución inicial? ¿Qué medida deberás tomar para garantizar la concentración adecuada de C?</p>
+<p>Datos sobre el microorganismo de referencia: <em>D₁₂₀</em> &#61; 0.7 s; <em>z</em> &#61; 9 °C Datos sobre los componentes: <em>z&#40;B&#41;</em> &#61; 20 °C; <em>z&#40;c&#41;</em> &#61; 15 °C</p>
+<h3 id="9"><a href="#9" class="header-anchor">9</a></h3>
+<p>Hoy estás muy contento, acabas de recoger la última nota ¡Ya puedes trabajar&#33; Lamentablemente sólo encuentras una oferta de trabajo, se trata de un contrato-basura en una de las empresas del Sr. Barrufet. Esta empresa es un nuevo intento por parte del Sr. Barrufet por conquistar el mercado de los productos lácteos. En este caso se trata del ‘Yogur  Bebible Mediterráneo’. Este producto intenta unir todas las ventajas de la dieta mediterránea en un solo alimento. Sus componentes son yogur, fibra de algarrobo —producto financiado por la Unión Europea— y aceite de oliva.</p>
+<p>En tu primer día de trabajo tu nuevo jefe te cuenta, “En primer lugar tienes que acabar de diseñar el procesado térmico del yogur para lograr tener un producto comercializable. Verás, una vez se tiene el producto elaborado, se envasa en recipientes de 250 ml. A continuación se esteriliza en autoclave”. Debido a las esclavistas condiciones laborales del Sr. Barrufet no eres la primera persona en ocupar el puesto que ocupas. Como única información dispones de las notas personales de tu antecesor. Estas notas dicen:</p>
+<pre><code class="language-plaintext">8 de septiembre
+La concentración media del microorganismo más termorresistente es de 2·10⁵ ufc/envase.
+Debemos encargar ensayos de termorresistencia.
+
+14 de septiembre
+El laboratorio de microbiología ha realizado ensayos de termodestrucción sobre las
+muestras enviadas. Los resultados son:
+t &#40;min&#41;     T &#40;°C&#41;      N₀ &#40;ufc/ml&#41;     N &#40;ufc/ml&#41;
+5           100         1.00E&#43;06        3.13E&#43;05
+5           105         1.00E&#43;06        4.25E&#43;04
+5           110         1.00E&#43;06        1.86E&#43;02
+
+Si el Sr. Barrufet fuera menos avaro además de los análisis nos habrían calculado
+el D₁₂₁ y la z 
+
+15 de septiembre
+El perfil de temperatura del autoclave es el siguiente:
+    1&#41;  Etapa de calentamiento:  Temperatura inicial, 25 °C. El calentamiento es
+    lineal con una pendiente de 6 °C/min.
+    2&#41;  Etapa de mantenimiento a 98 °C
+    3&#41;  Etapa de enfriamiento lineal hasta 20 °C con una pendiente de 10 °C/min
+Creo que el Sr. Barrufet ha visto la entrada en la que le llamaba avaro y me va a
+despedir…</code></pre>
+<p>Con el  tiempo, visto el sorprendente éxito del producto, el Sr. Barrufet desea aumentar la producción utilizando un sistema de esterilización térmica en continuo. De manera que se obtiene el producto, se esteriliza a 118 °C y, por último se envasa asépticamente. La ventaja de la operación en continuo es que la velocidad de transferencia de calor es muy elevada. Aprovechando el cambio de equipo, también se cambia el anticuado envase de 250 ml por otro de 1 L &#40;tamaño Super-ahorro, destinado a la venta en grandes superficies&#41;.</p>
+<p>Contestar de manera razonada a las siguientes preguntas:</p>
+<ol>
+<li><p>¿Cuál es la <em>z</em> y el <em>D₁₂₁</em> del microorganismo más termorresistente?</p>
+</li>
+<li><p>Calcular el tiempo de la etapa de mantenimiento para la esterilización discontinua</p>
+</li>
+<li><p>¿Calcular el tiempo de esterilización de la operación continua. ¿Qué concentración microbiana se obtiene tras el procesado térmico? Interpretar ese dato.</p>
+</li>
+</ol>
+<h3 id="10"><a href="#10" class="header-anchor">10</a></h3>
+<p>En una conserva se pueden encontrar tres tipos de microorganismos patógenos. Sus datos de termorresistencia son los siguientes:</p>
+<table><tr><th align="right">Microorganismo</th><th align="right">D121 &#40;min&#41;</th><th align="right">z &#40;°C&#41;</th></tr><tr><td align="right">A</td><td align="right">0.2</td><td align="right">5.5</td></tr><tr><td align="right">B</td><td align="right">0.4</td><td align="right">6.7</td></tr><tr><td align="right">C</td><td align="right">0.15</td><td align="right">4.7</td></tr></table>
+<p>Con objeto de reducir el riesgo microbiano se esteriliza el producto en envases de 125 ml a 115 °C. La concentración inicial del microorganismo más termorresistente es de 3·10² ufc/ml. El objetivo de la esterilización es lograr 9 reducciones decimales del microorganismo más termorresistente. El tratamiento consiste en un calentamiento lineal &#40;8 °C/min&#41;, etapa de mantenimiento a 115 °C y un enfriamiento, también lineal &#40;-14 °C/min&#41;.</p>
+<p>Responder de manera justificada a las siguientes preguntas:</p>
+<ol>
+<li><p>Demostrar mediante cálculos que el microorganismo B es el más resistente a la temperatura de tratamiento en el autoclave &#40;115 °C&#41;</p>
+</li>
+<li><p>¿Qué tiempo hay que programar en el autoclave para que se cumplan los objetivos de esterilización?</p>
+</li>
+<li><p>Si se decidiese realizar un tratamiento en continuo UHT &#40;etapas de calentamiento y enfriamiento despreciables&#41; a 125 °C, ¿cuál sería el tiempo de tratamiento? ¿El microorganismo A continúa siendo el más termorresistente?</p>
+</li>
+<li><p>A 125°C, ¿el microorganismo B continúa siendo el más termorresistente?</p>
+</li>
+<li><p>¿Cuál será la concentración de microorganismos tras el tratamiento? Explicar el significado de este dato</p>
+</li>
+</ol>
+<p><strong><a href="/PIAproblemas22-23/assets/notebooks-html/prob8-10.jl.html">Solución</a></strong></p>
+<h3 id="11"><a href="#11" class="header-anchor">11</a></h3>
+<p>En una empresa productora de alimento para animales de compañía tienen que diseñar el proceso de esterilización del producto. Se trata de un alimento con consistencia de paté. Se dispone de datos de termorresistencia del microorganismo objetivo:</p>
+<table><tr><th align="right">t &#40;min&#41;<br/>T &#40;°C&#41;</th><th align="right">114</th><th align="right">117</th><th align="right">120</th></tr><tr><td align="right">0</td><td align="right">1.0E&#43;06</td><td align="right">1.0E&#43;06</td><td align="right">1.0E&#43;06</td></tr><tr><td align="right">4</td><td align="right">5.8E&#43;05</td><td align="right">1.8E&#43;05</td><td align="right">5.2E&#43;03</td></tr><tr><td align="right">6</td><td align="right">4.4E&#43;05</td><td align="right">7.9E&#43;04</td><td align="right">3.7E&#43;02</td></tr><tr><td align="right">8</td><td align="right">3.4E&#43;05</td><td align="right">3.4E&#43;04</td><td align="right">2.7E&#43;01</td></tr><tr><td align="right">10</td><td align="right">2.5E&#43;05</td><td align="right">1.5E&#43;04</td><td align="right">&lt; 30</td></tr></table>
+<p>Se plantea lograr con el tratamiento térmico 8 reducciones decimales del microorganismo en cuestión tratándolo a 116 °C. Para esterilizar las conservas se utiliza un autoclave con las siguientes curvas t-T de calentamiento y enfriamiento:</p>
+<p><em>Calentamiento</em></p>
+<table><tr><th align="right">t &#40;min&#41;</th><th align="right">T &#40;°C&#41;</th></tr><tr><td align="right">0</td><td align="right">30</td></tr><tr><td align="right">6</td><td align="right">40.9</td></tr><tr><td align="right">12</td><td align="right">85.4</td></tr><tr><td align="right">18</td><td align="right">111.5</td></tr><tr><td align="right">24</td><td align="right">116</td></tr></table>
+<p><em>Enfriamiento</em></p>
+<table><tr><th align="right">t &#40;min&#41;</th><th align="right">T &#40;°C&#41;</th></tr><tr><td align="right">0</td><td align="right">116</td></tr><tr><td align="right">2.5</td><td align="right">72.1</td></tr><tr><td align="right">5</td><td align="right">52.1</td></tr><tr><td align="right">7.5</td><td align="right">47.2</td></tr><tr><td align="right">10</td><td align="right">45</td></tr></table>
+<p>Contestar a las siguientes preguntas:</p>
+<ol>
+<li><p>Demostrar que para el microorganismo a tratar <em>z</em> &#61; 6 °C y \(D_{121}\) &#61; 1.2 min</p>
+</li>
+<li><p>Calcular el tiempo &#40;real&#41; de la etapa de mantenimiento</p>
+</li>
+<li><p>¿Dónde se encuentra el punto crítico de esta conserva?</p>
+</li>
+<li><p>¿Se puede tratar este producto en una instalación en continuo? Si es así, describir dicho equipo</p>
+</li>
+</ol>
+<p><strong><a href="/PIAproblemas22-23/assets/notebooks-html/prob8-11.jl.html">Solución</a></strong></p>
+<h3 id="12"><a href="#12" class="header-anchor">12</a></h3>
+<p>El sr. Barrufet te ha contratado para diseñar el proceso productivo de su nueva planta de elaboración de ovoproductos. El principal producto a obtener en esta línea de procesado es huevo entero pasteurizado. A partir de tus estudios de Microbiología de alimentos y de Procesado de alimentos sabes que el objetivo de pasteurización es lograr 9 reducciones decimales &#40;9D&#41; del microorganismo patógeno <em>Salmonella senftenberg</em> y que el tratamiento habitual consiste en someter el producto a un tratamiento a 64.5 °C durante dos minutos y medio. En un libro encuentras que la termoresistencia para este microorganismo es:</p>
+<table><tr><th align="right">Microorganismo</th><th align="right">Temp. de referencia &#40;°C&#41;</th><th align="right">D&#40;min&#41;</th><th align="right">z &#40;°C&#41;</th></tr><tr><td align="right"><em>Salmonella senftenberg</em></td><td align="right">65.6</td><td align="right">0.8 a 1.0</td><td align="right">10</td></tr></table>
+<p>Contestar a las siguientes preguntas:</p>
+<ol>
+<li><p>Asumiendo que el calentamiento y el enfriamiento son lineales y que tienen la misma pendiente en valor absoluto, ¿cuánto deben valer las pendientes de enfriamiento y calentamiento para que se garantice el tratamiento propuesto?</p>
+</li>
+<li><p>Otra posibilidad es realizar un tratamiento de tipo HTST &#40;High Temperature-Short Time&#41; a 70 °C. Experimentalmente se determinan las curvas de calentamiento y de enfriamiento:</p>
+<p><em>Calentamiento</em></p>
+<table><tr><th align="right">t&#40;min&#41;</th><th align="right">T &#40;°C&#41;</th></tr><tr><td align="right">0</td><td align="right">55</td></tr><tr><td align="right">0.1</td><td align="right">62</td></tr><tr><td align="right">0.2</td><td align="right">65</td></tr><tr><td align="right">0.3</td><td align="right">69</td></tr><tr><td align="right">0.4</td><td align="right">70</td></tr></table>
+<p><em>Enfriamiento</em></p>
+<table><tr><th align="right">t &#40;min&#41;</th><th align="right">T &#40;°C&#41;</th></tr><tr><td align="right">0</td><td align="right">70</td></tr><tr><td align="right">0.1</td><td align="right">60</td></tr><tr><td align="right">0.2</td><td align="right">58</td></tr><tr><td align="right">0.3</td><td align="right">32</td></tr><tr><td align="right">0.4</td><td align="right">4</td></tr></table>
+<p>¿Cuánto tiempo debe durar la etapa de mantenimiento para garantizar la esterilización?</p>
+</li>
+</ol>
+<ol start="3">
+<li><p>El Real Decreto 1348/1992 de 6 de noviembre, “Reglamentación Técnico-Sanitaria para la producción y comercialización de ovoproductos” dice en su Capítulo VI. Requisitos analíticos:</p>
+<blockquote>
+<p>“Todo lote de ovoproductos se someterá, después del tratamiento, a controles  microbiológicos mediante sondeo en los establecimientos de tratamiento, para garantizar que cumplan los criterios siguientes:</p>
+<ul>
+<li><p>Salmonella: ausencia en 25 g o mL de ovoproducto.”</p>
+</li>
+</ul>
+</blockquote>
+<p>Mediante análisis microbiológicos se sabe que se parte de una concentración inicial de Salmonella de 100 ufc/L, ¿cumplirá nuestro producto con las exigencias de la legislación?</p>
+</li>
+<li><p>Si se comercializa este producto en envases de 10 L, ¿qué cantidad de microorganismos habrá por envase? ¿Cómo se interpreta este dato?</p>
+</li>
+</ol>
+<p><strong><a href="/PIAproblemas22-23/assets/notebooks-html/prob8-12.jl.html">Solución</a></strong></p>
+<h3 id="13"><a href="#13" class="header-anchor">13</a></h3>
+<p>Tienes que diseñar la operación de pasteurización en discontinuo de un producto envasado en autoclave. Sabes que el microorganismo objetivo a inactivar tiene un tiempo de reducción decimal de 12 minutos a 90 ºC y su valor <em>z</em> es de 8 ºC. El objetivo de la esterilización es lograr 12 reducciones decimales.</p>
+<p>Para poder calcular el tiempo de la etapa de mantenimiento es necesario conocer las curvas de penetración de calor en el interior de los envases. Determinas estas curvas introduciendo dos sondas en el interior de dos envases a procesar. Uno de los envases instrumentados se coloca en una posición cercana al exterior del autoclave &#40;<em>Text</em>&#41;, el otro de los envases se coloca en el centro del autoclave &#40;<em>Tint</em>&#41;. El motivo de realizar dos medidas es que sospechas que las condiciones de procesado son diferentes según la posición del envase.</p>
+<p>En la figura siguiente se muestran las curvas de calentamiento:</p>
+<p><img src="enun8-13.png" alt="" /></p>
+<p>El enfriamiento se puede considerar lineal en los dos casos. La conserva en el exterior del autoclave experimenta un descenso de la temperatura de -5.5 ºC/min. La temperatura de la conserva situada en el centro disminuye -3 ºC/min.</p>
+<p>Contestar a las siguientes preguntas:</p>
+<ol>
+<li><p>Calcular el tiempo de la etapa de mantenimiento para la conserva situada en el exterior y para la conserva situada en el centro del autoclave</p>
+</li>
+<li><p>¿Qué tiempo utilizarías para programar el autoclave? ¿El de la conserva en el exterior, en el centro o la media? Justifica la respuesta mediante cálculos.</p>
+</li>
+<li><p>Si se cambiase el microorganismo de referencia, ¿cambiarían los tiempos calculados? Para recalcularlos, ¿sería necesario repetir los experimentos para encontrar las curvas de penetración de calor?</p>
+</li>
+<li><p>Si se parte de una concentración inicial de 100.000 ufc/envase, ¿cuál será la concentración final? ¿Cómo se interpreta ese dato?</p>
+</li>
+</ol>
+<h3 id="14"><a href="#14" class="header-anchor">14</a></h3>
+<p>Un alimento se procesa térmicamente para lograr 9 reducciones decimales del microorganismo más termorresistente &#40;\(D_{121}\) &#61; 0.25 min y <em>z</em> &#61;11.3 ºC&#41;. El tratamiento se puede realizar a dos temperaturas posibles &#40;105 ºC y 110 ºC&#41;. </p>
+<p>Contestar a las siguientes preguntas:</p>
+<ol>
+<li><p>Elegir la temperatura de tratamiento que proporciona un procesado más económico sabiendo que los gastos energéticos son 0.0023 €/&#40;min·ºC&#41;</p>
+</li>
+<li><p>Elegir la temperatura de tratamiento que provoca las menores pérdidas de tiamina &#40;\(D_{121}\) &#61; 158 min y <em>z</em> &#61;25 ºC&#41;</p>
+</li>
+</ol>
+<h3 id="15"><a href="#15" class="header-anchor">15</a></h3>
+<p>En el capítulo dedicado a Pasteurización del libro “Tecnología del procesado de los alimentos” de Peter Fellows se encuentra la siguiente tabla:</p>
+<table><tr><th align="right">Alimento</th><th align="right">Objetivo principal</th><th align="right">Objetivo secundario</th><th align="right">Condiciones mínimas de tratamiento</th></tr><tr><td align="right">pH &lt; 4.5</td><td align="right"></td><td align="right"></td><td align="right"></td></tr><tr><td align="right">Zumo de frutas</td><td align="right">Inactivación enzimática &#40;pectinestearasa y poligalacturonasa&#41;</td><td align="right">Destrucción de gérmenes causantes de alteraciones &#40;levaduras y hongos&#41;</td><td align="right">65 ºC durante 30 min; <br/> 77 ºC durante 1 min</td></tr></table>
+<p>Contestar a las siguientes preguntas:</p>
+<ol>
+<li><p>Qué valor tiene la z de la enzima objetivo del zumo anterior? ¿Cuál sería la duración del tratamiento si se realizase a una temperatura de 70 ºC?</p>
+</li>
+<li><p>Se realiza un tratamiento térmico a 70 ºC para el zumo del ejemplo en el que se puede suponer un calentamiento y un enfriamiento lineal. Sabiendo que la etapa de calentamiento y de enfriamiento suponen un 10&#37; del tratamiento total respectivamente, calcular las pendientes de calentamiento y enfriamiento y determinar la duración de la etapa de mantenimiento.</p>
+</li>
+</ol>
+<h3 id="16"><a href="#16" class="header-anchor">16</a></h3>
+<p>Se procesa térmicamente un alimento. El objetivo es lograr 8 reducciones decimales de un microorganismo objetivo &#40;\(D_{121}\) &#61; 1.5 min y <em>z</em> &#61; 10 ºC&#41;. El procesado se hace mediante un calentamiento lineal, una etapa de mantenimiento a 115 ºC y una etapa de enfriamiento lineal. Durante la etapa de mantenimiento se inactiva el 10&#37; de los microorganismos y durante el enfriamiento el 5&#37;.</p>
+<ol>
+<li><p>¿Cuánto debe durar la etapa de mantenimiento para lograr el objetivo del tratamiento?</p>
+</li>
+<li><p>¿Qué valores tienen la pendiente de calentamiento y de enfriamiento para el procesado de la pregunta anterior?</p>
+</li>
+<li><p>El alimento procesado se envasa en envases de tipo bag in box de 50 l. Si la contaminación inicial del microorganismo es de 100 ufc/ml, ¿qué proporción de envases tendrán problemas de conservación? ¿Cómo se relaciona este resultado con el concepto de esterilidad comercial?</p>
+</li>
+</ol>
+<h3 id="17"><a href="#17" class="header-anchor">17</a></h3>
+<p>La leche se puede procesar mediante los siguientes procesos: pasteurización, UHT directa o indirecta o esterilización térmica del producto envasado. Cada uno de los procesos presenta el siguiente perfil de temperatura:</p>
+<p>Pasteurización:</p>
+<table><tr><th align="right">t &#40;s&#41;</th><th align="right">T &#40;°C&#41;</th></tr><tr><td align="right">0</td><td align="right">5.0</td></tr><tr><td align="right">35</td><td align="right">72.0</td></tr><tr><td align="right">55</td><td align="right">72.0</td></tr><tr><td align="right">85</td><td align="right">6.0</td></tr></table>
+<p>UHT directo:</p>
+<table><tr><th align="right">t &#40;s&#41;</th><th align="right">T &#40;°C&#41;</th></tr><tr><td align="right">0</td><td align="right">5.0</td></tr><tr><td align="right">10</td><td align="right">80.0</td></tr><tr><td align="right">10</td><td align="right">140.0</td></tr><tr><td align="right">15</td><td align="right">140.0</td></tr><tr><td align="right">15</td><td align="right">80.0</td></tr><tr><td align="right">45</td><td align="right">20.0</td></tr></table>
+<p>UHT indirecto:</p>
+<table><tr><th align="right">t &#40;s&#41;</th><th align="right">T &#40;°C&#41;</th></tr><tr><td align="right">0</td><td align="right">5.0</td></tr><tr><td align="right">45</td><td align="right">140.0</td></tr><tr><td align="right">50</td><td align="right">140.0</td></tr><tr><td align="right">120</td><td align="right">20.0</td></tr></table>
+<p>Esterilización de producto envasado:</p>
+<table><tr><th align="right">t &#40;min&#41;</th><th align="right">T &#40;ºC&#41;</th></tr><tr><td align="right">0.0</td><td align="right">5</td></tr><tr><td align="right">1.0</td><td align="right">44</td></tr><tr><td align="right">2.0</td><td align="right">77.5</td></tr><tr><td align="right">3.0</td><td align="right">90.7</td></tr><tr><td align="right">4.0</td><td align="right">99</td></tr><tr><td align="right">5.0</td><td align="right">106</td></tr><tr><td align="right">6.0</td><td align="right">110</td></tr><tr><td align="right">7.0</td><td align="right">113</td></tr><tr><td align="right">8.0</td><td align="right">115</td></tr><tr><td align="right">9.0</td><td align="right">117.7</td></tr><tr><td align="right">10.0</td><td align="right">119</td></tr><tr><td align="right">11.0</td><td align="right">120.7</td></tr><tr><td align="right">12.0</td><td align="right">121.5</td></tr><tr><td align="right">13.0</td><td align="right">122</td></tr><tr><td align="right">14.0</td><td align="right">122</td></tr><tr><td align="right">15.0</td><td align="right">122</td></tr><tr><td align="right">16.0</td><td align="right">122</td></tr><tr><td align="right">17.0</td><td align="right">122</td></tr><tr><td align="right">18.7</td><td align="right">122</td></tr><tr><td align="right">19.0</td><td align="right">122.0</td></tr><tr><td align="right">21.3</td><td align="right">109.5</td></tr><tr><td align="right">22.0</td><td align="right">103.5</td></tr><tr><td align="right">23.2</td><td align="right">95.0</td></tr><tr><td align="right">24.8</td><td align="right">84.0</td></tr><tr><td align="right">27.7</td><td align="right">60.0</td></tr><tr><td align="right">30.0</td><td align="right">20.0</td></tr></table>
+<p>Estudiar el efecto de los diferentes tratamientos sobre los siguientes microorganismos y compuestos:</p>
+<table><tr><th align="right">Objetivo</th><th align="right">T &#40;°C&#41;</th><th align="right">\(D_T\) &#40;s&#41;</th><th align="right">z &#40;°C&#41;</th></tr><tr><td align="right"><em>Bacillus cereus</em></td><td align="right">121.1</td><td align="right">310</td><td align="right">9.7</td></tr><tr><td align="right"><em>Pseudomonas caryophylli</em></td><td align="right">73.7</td><td align="right">0.4</td><td align="right">8.7</td></tr><tr><td align="right">Fosfatasa alcalina</td><td align="right">72</td><td align="right">8</td><td align="right">5</td></tr><tr><td align="right">Tiamina &#40;vit. B₁&#41;</td><td align="right">121.1</td><td align="right">12650</td><td align="right">25</td></tr><tr><td align="right">Ác. ascórbico &#40;vit. C&#41;</td><td align="right">121.1</td><td align="right">150000</td><td align="right">51</td></tr></table>
+<p>Contestar a las siguientes preguntas:</p>
+<ol>
+<li><p>¿Son los cuatro tratamientos iguales desde el punto de vista de seguridad alimentaria? Evaluar el impacto sobre los dos microorganismos de la tabla.</p>
+</li>
+<li><p>¿Qué tratamiento tienen un mayor impacto sobre la calidad del producto? </p>
+</li>
+<li><p>¿Es razonable utilizar la fosfatasa alcalina para verificar el tratamiento térmico de la leche?</p>
+</li>
+</ol>
+<p>NOTA: Suponer que todas las etapas son a temperatura constante o de calentamiento o enfriamiento lineal.</p>
+<p><strong><a href="/PIAproblemas22-23/assets/notebooks-html/prob8-17.jl.html">Solución</a></strong></p></div>
+<script type="text/javascript" src="/PIAproblemas22-23/libs/ansi_up.js" defer></script>
+
+<div id="copyright" class="docs-footer container grid-lg">
+<a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Javier Arántegui
+</div>
+</div><!-- CONTENT ENDS HERE -->
+    </div>
+    </div>
+    </div>
+    </div>
+  </body>
+</html>

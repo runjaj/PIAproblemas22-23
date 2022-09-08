@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" href="/PIAproblemas22-23/assets/favicon.png">
+  <script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ["\\(", "\\)"]],
+      processEscapes: true,
+    }
+  };
+</script>
+
+<!-- This weird alignment is required by Franklin's parser. -->
+<script
+    async
+    src="/PIAproblemas22-23/assets/MathJax/MathJax-3.2.2/es5/tex-mml-chtml.js">
+</script>
+
+<style>
+@font-face {
+  src: url("/JuliaTutorialsTemplate//assets/MathJax/MathJax-3.2.2/es5/output/chtml/fonts/woff-v2/MathJax_Main-Regular.woff">
+}
+</style>
+
+<style>
+@font-face {
+  src: url("/JuliaTutorialsTemplate//assets/MathJax/MathJax-3.2.2/es5/output/chtml/fonts/woff-v2/MathJax_Zero.woff">
+}
+</style>
+
+<style>
+@font-face {
+  src: url("/JuliaTutorialsTemplate//assets/MathJax/MathJax-3.2.2/es5/output/chtml/fonts/woff-v2/MathJax_Math-Italic.woff">
+}
+</style>
+
+  <link rel="stylesheet"
+  href="/PIAproblemas22-23/assets/Highlight/cdn-release-11.5.0/build/styles/github.min.css">
+
+<script
+  src="/PIAproblemas22-23/assets/Highlight/cdn-release-11.5.0/build/highlight.min.js">
+</script>
+
+<script
+  src="/PIAproblemas22-23/assets/Highlight/cdn-release-11.5.0/build/languages/julia.min.js">
+</script>
+
+<script
+  src="/PIAproblemas22-23/assets/Highlight/cdn-release-11.5.0/build/languages/julia-repl.min.js">
+</script>
+
+<script>
+  hljs.configure({tabReplace: '    '});
+  hljs.highlightAll();
+</script>
+
+    <style>
+    @font-face {
+      font-family: JuliaMono-Regular;
+      src: url("/JuliaTutorialsTemplate//assets/JuliaMono/juliamono-0.044/webfonts/JuliaMono-Regular.woff2");
+    }
+    </style>
+
+  <link rel="stylesheet" href="/PIAproblemas22-23/css/spectre.min.css">
+  <link rel="stylesheet" href="/PIAproblemas22-23/css/spectre-exp.min.css">
+  <link rel="stylesheet" href="/PIAproblemas22-23/css/spectre-icons.min.css">
+  <link rel="stylesheet" href="/PIAproblemas22-23/css/spectre-overrides.css">
+  <link rel="stylesheet" href="/PIAproblemas22-23/css/docs.min.css">
+
+  <title>5. Separaciones físicas - Problemas PIA 2022-23</title>
+  <meta name="description" content="A template for building websites with Julia language content. Easily create Pluto notebooks and publish them online.">
+</head>
+<body>
+  <div class="docs-container off-canvas off-canvas-sidebar-show">
+  <div class="docs-navbar">
+    <a class="off-canvas-toggle btn btn-link btn-action" href="#sidebar"><i class="icon icon-menu"></i></a>
+    <div class="btns d-flex">
+      <a class="btn btn-primary ml-1" href="https://github.com/rikhuijzer/JuliaTutorialsTemplate">GitHub</a>
+    </div>
+</div>
+
+<div id="sidebar" class="docs-sidebar off-canvas-sidebar">
+
+<div class="docs-brand">
+    <h5><a href="/PIAproblemas22-23/">Problemas PIA 2022-23</a></h5>
+</div>
+
+<div class="docs-nav">
+<div class="accordion-container">
+  <ul class="menu menu-nav">
+    <div class="menu-header">Inicio</div>
+    <li class='menu-item '><a href='/PIAproblemas22-23///'>Inicio</a></li>
+    <br/>
+    <div class="menu-header">Temas</div>
+    <li class='menu-item '><a href='/PIAproblemas22-23//2.PrepMatPrima/'>2. Preparación de materia prima</a></li>
+    <li class='menu-item '><a href='/PIAproblemas22-23//3.RedTamaño/'>3. Reducción de tamaño</a></li>
+    <li class='menu-item '><a href='/PIAproblemas22-23//4.Mezclado/'>4. Mezclado</a></li>
+    <li class='menu-item '><a href='/PIAproblemas22-23//5.SepFisicas/'>5. Separaciones físicas</a></li>
+    <li class='menu-item '><a href='/PIAproblemas22-23//8.ConsCalor/'>8. Conservación por calor</a></li>
+    <br/>
+    <div class="menu-header">Example Pluto tutorials</div>
+    <li class='menu-item '><a href='/PIAproblemas22-23/tutorials/linear-model/'>Linear model</a></li>
+    <li class='menu-item '><a href='/PIAproblemas22-23/tutorials/ode/'>Harmonic oscillator</a></li>
+    <li class='menu-item '><a href='/PIAproblemas22-23/tutorials/benchmarking/'>Benchmarking</a></li>
+  </ul>
+</div>
+</div>
+</div>
+<a class="off-canvas-overlay" href="#close"></a>
+
+
+<div class="off-canvas-content">
+<div id="content" class="docs-content">
+<div class="container">
+<!-- Content appended here -->
+<div class="franklin-content"><h2 id="5_separaciones_físicas"><a href="#5_separaciones_físicas" class="header-anchor">5 Separaciones físicas</a></h2>
+<h3 id="filtración"><a href="#filtración" class="header-anchor">Filtración</a></h3>
+<h4 id="1"><a href="#1" class="header-anchor">1</a></h4>
+<p>Se realiza un ensayo con un filtro para vino y se encuentra que el caudal del filtrado es de 450 kg/h para una diferencia de presión constante de 350 kPa. El filtro tiene un área total de 0.82 m². Asumir que la resistencia del filtro no se ve afectada por la cantidad de torta. Se añade otro filtro de 6.5 m², ¿qué presión se requeriría para obtener 500 hl en un turno de 8 horas de la planta combinada? Determinar primero R, la resistencia y, a continuación, la presión diferencial. Asumir que la densidad del vino es 1000 kg/m³. &#91;<a href="https://www.nzifst.org.nz/resources/unitoperations/mechseparation7.htm#problems">Earle</a>&#93;</p>
+<p><strong><a href="/PIAproblemas22-23/assets/notebooks-html/prob5-1.jl.html">Solución</a></strong></p>
+<h4 id="2"><a href="#2" class="header-anchor">2</a></h4>
+<p>Un filtro para clarificar vino permite un caudal de filtrado de 500 l/h al operar con una presión diferencial de 220 kPa. Se quieren filtrar 1200 l de vino con el doble de turbidez, si se desea completar la filtración en un ciclo de 1 h, ¿qué presión se debería aplicar?</p>
+<p><strong><a href="/PIAproblemas22-23/assets/notebooks-html/prob5-2.jl.html">Solución</a></strong></p>
+<h3 id="centrifugación"><a href="#centrifugación" class="header-anchor">Centrifugación</a></h3>
+<h4 id="3"><a href="#3" class="header-anchor">3</a></h4>
+<p>En una pequeña centrífuga con un radio efectivo de trabajo de 9 cm, se desea una fuerza centrífuga de 6000g. ¿A qué velocidad debería rotar la centrífuga?</p>
+<p>Si el bowl de la centrífuga tiene un radio mínimo de 8 cm y un radio máximo de 9 cm, ¿cuál es la razón de la fuerza centrífuga entre el radio mínimo y máximo? &#91;<a href="https://www.nzifst.org.nz/resources/unitoperations/mechseparation7.htm#problems">Earle</a>&#93;</p>
+<p><strong><a href="/PIAproblemas22-23/assets/notebooks-html/prob5-3.jl.html">Solución</a></strong></p>
+<h4 id="4"><a href="#4" class="header-anchor">4</a></h4>
+<p>Se separa una emulsión aceite/agua con glóbulos de 5 µm en aceite y agua, ¿qué velocidad &#40;rpm&#41; se necesitaría si el radio de operación de la centrífuga es de 5 cm? Asumir que los glóbulos deben desplazarse 3 cm y que este movimiento se debe realizar en 1 s para que la centrífuga pueda operar en continuo dadas las condiciones de producción.</p>
+<p>Datos: Densidad del aceite: 900 kg/m³. &#91;<a href="https://www.nzifst.org.nz/resources/unitoperations/mechseparation7.htm#problems">Earle</a>&#93;</p>
+<p><strong><a href="/PIAproblemas22-23/assets/notebooks-html/prob5-4.jl.html">Solución</a></strong></p>
+<h3 id="concentración_por_membranas"><a href="#concentración_por_membranas" class="header-anchor">Concentración por membranas</a></h3>
+<h4 id="5"><a href="#5" class="header-anchor">5</a></h4>
+<p>Calcular la presión osmótica a 20 ºC de una solución de sacarosa en agua que contiene un 20 &#37; en peso de sacarosa. La densidad de esta solución es de 1081 kg/m³. &#40;Peso molecular sacarosa: 342.3 g/mol.&#41; &#91;<a href="https://www.nzifst.org.nz/resources/unitoperations/conteqseparation13.htm#problems">Earle</a>&#93;</p>
+<p><strong><a href="/PIAproblemas22-23/assets/notebooks-html/prob5-5.jl.html">Solución</a></strong></p>
+<h4 id="6"><a href="#6" class="header-anchor">6</a></h4>
+<p>En una planta de ultrafiltración de 7:1 de proteína respecto a lactosa, la capacidad de la planta es de 570 kg m⁻² h⁻¹ de leche desnatada. Calcular la capacidad de la planta en una relación de 2:1. &#91;<a href="https://www.nzifst.org.nz/resources/unitoperations/conteqseparation13.htm#problems">Earle</a>&#93;</p>
+<p><strong><a href="/PIAproblemas22-23/assets/notebooks-html/prob5-6.jl.html">Solución</a></strong></p>
+<script type="text/javascript" src="/PIAproblemas22-23/libs/ansi_up.js" defer></script>
+
+<div id="copyright" class="docs-footer container grid-lg">
+<a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Javier Arántegui
+</div>
+</div><!-- CONTENT ENDS HERE -->
+    </div>
+    </div>
+    </div>
+    </div>
+  </body>
+</html>
