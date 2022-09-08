@@ -1,6 +1,6 @@
 @def title = "2. Preparación de material prima"
 
-## 2 Preparación de materia prima
+## 2. Preparación de materia prima
 
 ### 1
 
