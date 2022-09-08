@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.17.1
+# v0.19.11
 
 using Markdown
 using InteractiveUtils
@@ -50,7 +50,7 @@ Vsuciedad = 740u"kg"
 
 # ╔═╡ 41fc5e24-42dc-11ec-2ad0-c1009dc5fbfb
 md"""
-### 2 Preparación de materia prima
+### 2. Preparación de materia prima
 
 #### 1
 
@@ -95,11 +95,19 @@ Unitful = "~1.9.1"
 PLUTO_MANIFEST_TOML_CONTENTS = """
 # This file is machine-generated - editing it directly is not advised
 
+[[Artifacts]]
+uuid = "56f22d72-fd6d-98f1-02f0-08ddc0907c33"
+
 [[CommonMark]]
 deps = ["Crayons", "JSON", "URIs"]
 git-tree-sha1 = "393ac9df4eb085c2ab12005fc496dae2e1da344e"
 uuid = "a80b9123-70ca-4bc0-993e-6e3bcb318db6"
 version = "0.8.3"
+
+[[CompilerSupportLibraries_jll]]
+deps = ["Artifacts", "Libdl"]
+uuid = "e66e0078-7015-5450-92f7-15fbd957f2ae"
+version = "0.5.2+0"
 
 [[ConstructionBase]]
 deps = ["LinearAlgebra"]
@@ -126,11 +134,16 @@ version = "0.21.2"
 uuid = "8f399da3-3557-5675-b5ff-fb832c97cbdb"
 
 [[LinearAlgebra]]
-deps = ["Libdl"]
+deps = ["Libdl", "libblastrampoline_jll"]
 uuid = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 
 [[Mmap]]
 uuid = "a63ad114-7e13-5084-954f-fe012c677804"
+
+[[OpenBLAS_jll]]
+deps = ["Artifacts", "CompilerSupportLibraries_jll", "Libdl"]
+uuid = "4536629a-c528-5b80-bd46-f80d51c5b363"
+version = "0.3.20+0"
 
 [[Parsers]]
 deps = ["Dates"]
@@ -143,8 +156,12 @@ deps = ["Unicode"]
 uuid = "de0858da-6303-5e67-8744-51eddeeeb8d7"
 
 [[Random]]
-deps = ["Serialization"]
+deps = ["SHA", "Serialization"]
 uuid = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
+
+[[SHA]]
+uuid = "ea8e919c-243c-51af-8825-aaa63cd721ce"
+version = "0.7.0"
 
 [[Serialization]]
 uuid = "9e88b42a-f829-5b0c-bbe9-9e923198166b"
@@ -162,11 +179,16 @@ deps = ["ConstructionBase", "Dates", "LinearAlgebra", "Random"]
 git-tree-sha1 = "880f77d2cd4c6948e6bd55425b7b52f34dcd7f4b"
 uuid = "1986cc42-f94f-5a68-af5c-568840ba703d"
 version = "1.9.1"
+
+[[libblastrampoline_jll]]
+deps = ["Artifacts", "Libdl", "OpenBLAS_jll"]
+uuid = "8e850b90-86db-534c-a0d3-1478176c7d93"
+version = "5.1.1+0"
 """
 
 # ╔═╡ Cell order:
 # ╟─41fc5e24-42dc-11ec-2ad0-c1009dc5fbfb
-# ╠═41d507ca-e6ba-4409-aa44-1fe3dea97b34
+# ╟─41d507ca-e6ba-4409-aa44-1fe3dea97b34
 # ╟─a6d223b3-ca92-4ad5-82f8-b86eaf44a8dc
 # ╟─b935f0a3-eb57-4bed-a526-7383475b8019
 # ╟─3d6220b8-8fec-406a-8e33-a3f79ff15f53
@@ -177,7 +199,7 @@ version = "1.9.1"
 # ╠═e664b323-42ef-4403-9410-fbd1f12cc321
 # ╠═ea2af6b9-576e-442d-bbeb-cf5d80b35479
 # ╟─a6905f89-991d-4682-975e-b0ff23aef565
-# ╠═4cb40a3e-43b9-44b9-bcc2-45728331d527
+# ╟─4cb40a3e-43b9-44b9-bcc2-45728331d527
 # ╠═68f53ef2-3243-4380-bf11-ac4fa68040c5
 # ╟─b45fe982-78c4-4c7e-a820-9e08854834e4
 # ╟─6c86ecfe-e40a-45d5-b8aa-e9ad15efbc93
